@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>fps.js</title>
+  <style>
+    /* Reset default styles */
+    body,
+    h1,
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Set a background color and font styles */
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    #demobtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 75px;
+
+    }
+
+    #demobtn:hover {
+      background-color: #45a049;
+    }
+
+    /* Create a responsive layout using CSS Grid */
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    /* Style a card element */
+    .card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    /* Add a hover effect to the card */
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Style headings and paragraphs */
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #333333;
+    }
+
+    /* Create a responsive navigation menu */
+    .navbar {
+      background-color: #333333;
+      padding: 10px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .navbar li {
+      margin-right: 10px;
+    }
+
+    .navbar a {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 5px;
+    }
+
+    .navbar a:hover {
+      background-color: #ffffff;
+      color: #333333;
+      border-radius: 5px;
+    }
+
+    /* Apply a fade-in animation to elements */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 0.5;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #loading-bar {
+      width: 0%;
+      height: 10px;
+      background-color: #09dc17;
+      transition: width 0.3s;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid transparent;
+      border-radius: 5px;
+    }
+
+    #loading-text {
+      position: absolute;
+      top: 47%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <p id="loading-text"></p>
+    <div id="loading-bar"></div>
+  </div>
+  <div id="main" class="hidden fade-in">
+    <center class="fade-in">
+      <h1>fps.js</h1>
+    </center>
+    <ul class="navbar">
+      <a href="https://github.com/TrippleMSoftware/fps.js" target="_blank">Github</a>
+    </ul>
+    <center class="fade-in">
+      <div class="container">
+        <center>
+          <h1>FPS.js By TrippleMSoftware</h1>
+          <a onclick="fpsjs()">
+            <h3 id="demobtn">Demo</h3>
+          </a>
+        </center>
+      </div>
+    </center>
+  </div>
+  <script>
+    const loadingBar = document.getElementById("loading-bar");
+    const loadingText = document.getElementById("loading-text"); // Add this line to get the loading text element
+    const mainDiv = document.getElementById("main"); // Add this line to get the main div element
+    let progress = 0;
+
+    function updateLoadingBar() {
+      if (progress >= 100) {
+        loadingBar.style.width = "100%";
+        loadingBar.style.opacity = "0";
+        loadingText.style.color = "#ffffff"; // Set the text color to white
+        loadingText.textContent = "Loading Complete"; // Display the loading complete text
+        setTimeout(() => {
+          loadingBar.remove();
+          loadingText.remove();
+          mainDiv.classList.remove("hidden"); // Remove the hidden class from the main div
+        }, 300);
+      } else {
+        loadingBar.style.width = progress + "%";
+        loadingText.style.color = "#333333"; // Set the text color to white
+        loadingText.textContent = progress + "%"; // Display the current progress as text
+      }
+    }
+
+    function generateRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+
+    function startLoading() {
+      const interval = setInterval(() => {
+        progress += generateRandomInt(1, 13);
+        updateLoadingBar();
+        if (progress >= 100) {
+          clearInterval(interval);
+        }
+      }, generateRandomInt(250, 1000));
+    }
+
+    startLoading();
+
+    function fpsjs() {
+      alert("+------------------------------------------------------------+\n|                            fps.js v0.1                                   |\n|      A simple fps counter in pure js.                  |\n|      Bugs: Max displayed fps 30                         |\n|      Copyright (c) 2024 TrippleMSoftware       |\n+------------------------------------------------------------+");
+
+      var style = document.createElement(
+        'style');
+      style.innerHTML =
+        `@import url('https://fonts.googleapis.com/css2?family=Honk&display=swap');`;
+      document.head.appendChild(style);
+      var fps = 0;
+      var startTime, endTime;
+
+      function updateFPS() {
+        endTime = performance.now();
+        var timeDiff = endTime - startTime;
+        fps = Math.round(1000 / timeDiff);
+        startTime = endTime;
+        requestAnimationFrame(updateFPS);
+      }
+
+      function startFPSCounter() {
+        startTime = performance.now();
+        updateFPS();
+      }
+      startFPSCounter();
+      var fpsDiv = document.createElement(
+        'div');
+      fpsDiv.id = 'fpscounter'
+      fpsDiv.style.position = 'fixed';
+      fpsDiv.style.top = '25px';
+      fpsDiv.style.left = '10px';
+      fpsDiv.style.backgroundColor =
+        'rgba(0, 0, 0, 0.5)';
+      fpsDiv.style.color = 'white';
+      fpsDiv.style.padding = '10px';
+      fpsDiv.style.fontFamily =
+        'Honk, system-ui';
+      fpsDiv.style.fontSize = '24px';
+      fpsDiv.style.zIndex = '999';
+      fpsDiv.style.webkitUserSelect = 'none';
+      fpsDiv.style.userSelect = 'none';
+      fpsDiv.style.borderRadius = '5px';
+      fpsDiv.style.width = '100px'
+      document.body.appendChild(fpsDiv);
+
+      function updateFPSDisplay() {
+        fpsDiv.textContent = 'FPS: ' + fps;
+        requestAnimationFrame(
+          updateFPSDisplay);
+      }
+      updateFPSDisplay();
+
+      var fpscounter = document
+        .getElementById("fpscounter");
+
+      var isDragging = false;
+      var offsetX = 0;
+      var offsetY = 0;
+
+      fpscounter.style.cursor = 'grab';
+
+      fpscounter.addEventListener("mousedown",
+        function(event) {
+          fpscounter.style.cursor = 'hold';
+          isDragging = true;
+          offsetX = event.clientX -
+            fpscounter.offsetLeft;
+          offsetY = event.clientY -
+            fpscounter.offsetTop;
+        });
+
+      document.addEventListener("mousemove",
+        function(event) {
+          if (isDragging) {
+            fpscounter.style.left = (event
+              .clientX - offsetX) + "px";
+            fpscounter.style.top = (event
+              .clientY - offsetY) + "px";
+          }
+        });
+
+      document.addEventListener("mouseup",
+        function() {
+          isDragging = false;
+        });
+    }
+  </script>
+  
+</body>
+
+</html>
