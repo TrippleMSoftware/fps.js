@@ -29,6 +29,7 @@ alert("+------------------------------------------------------------+\n|        
   fpsDiv.style.left = '10px';
   fpsDiv.style.backgroundColor =
     'rgba(0, 0, 0, 0.5)';
+  fpsDiv.style.borderRadius = '5px';
   fpsDiv.style.color = 'white';
   fpsDiv.style.padding = '10px';
   fpsDiv.style.fontFamily =
